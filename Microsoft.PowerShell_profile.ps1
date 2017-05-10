@@ -38,11 +38,12 @@ else #not admin
 
     switch ($result)
     {
-        0 {Start-Process powershell.exe -Verb runas;exit}
+        0 {Start-Process powershell.exe -Verb runas}
         1 {"You selected No."}
         2 {Start-Process powershell.exe -Credential}
     }
 
 }
+
 
 Clear-Host
