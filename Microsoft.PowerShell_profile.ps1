@@ -29,6 +29,9 @@ else #not admin
     $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", `
     "Stay as user..."
 
+    $switchAccount = New-Object System.Management.Automation.Host.ChoiceDescription "&switchAccount", `
+    "Be another person..."
+
     $options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no)
 
     $result = $host.ui.PromptForChoice($title, $message, $options, 1) 
@@ -37,6 +40,7 @@ else #not admin
     {
         0 {Start-Process powershell.exe -Verb runas;exit}
         1 {"You selected No."}
+        2 {Start-Process powershell.exe -Credential}
     }
 
 }
