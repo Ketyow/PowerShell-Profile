@@ -1,9 +1,10 @@
 $Shell = $Host.UI.RawUI
 Clear-Host
 
-if((whoami.exe /all | Select-String S-1-16-12288) –ne $null) #if admin
+if((whoami.exe /all | Select-String S-1-16-12288) -ne $null) #if admin OLD version 
+#([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator") #if admin NEW vesion
 {
-    $Shell.WindowTitle=”!!!ADMIN!!!! "+$env:USERNAME+" PowerShell!!!”
+    $Shell.WindowTitle = "!!!ADMIN!!!! "+$env:USERNAME+" PowerShell!!!"
     $shell.BackgroundColor = "DarkRed"
     $shell.ForegroundColor = "White"
     #Set the prompt to say admin
@@ -16,7 +17,7 @@ if((whoami.exe /all | Select-String S-1-16-12288) –ne $null) #if admin
 }
 else #not admin
 {
-    $Shell.WindowTitle=$env:USERNAME+" PowerShell!!!”
+    $Shell.WindowTitle=$env:USERNAME+" PowerShell!!!"
     $shell.BackgroundColor = "Black"
     $shell.ForegroundColor = "White"
 
@@ -29,10 +30,10 @@ else #not admin
     $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", `
     "Stay as user..."
 
-    $switchAccount = New-Object System.Management.Automation.Host.ChoiceDescription "&switchAccount", `
+    $switchAccount = New-Object System.Management.Automation.Host.ChoiceDescription "&Switch Account", `
     "Be another person..."
 
-    $options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no)
+    $options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no, $switchAccount)
 
     $result = $host.ui.PromptForChoice($title, $message, $options, 1) 
 
@@ -40,10 +41,8 @@ else #not admin
     {
         0 {Start-Process powershell.exe -Verb runas}
         1 {"You selected No."}
-        2 {Start-Process powershell.exe -Credential}
+        2 {Start-Process powershell.exe -Credential $(Get-Credential)}
     }
-
 }
-
 
 Clear-Host
