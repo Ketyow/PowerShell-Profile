@@ -39,7 +39,7 @@ else #not admin
 
     switch ($result)
     {
-        0 {Start-Process powershell.exe -Verb runas}
+        0 {Start-Process powershell.exe -Verb runas; [Environment]::Exit(1)}
         1 {"You selected No."}
         2 {Start-Process powershell.exe -Credential $(Get-Credential)}
     }
